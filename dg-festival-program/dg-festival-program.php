@@ -21,15 +21,13 @@ define('DG_FESTIVAL_PROGRAM_TAGS_OPTION', 'dg_festival_program_tags');
 function dg_festival_program_get_default_venues(): array
 {
     return [
-        ['id' => 'nagyszinpad', 'label' => 'Nagyszínpad', 'color' => '#c9d7e6', 'text_color' => '#0f2133'],
-        ['id' => 'szinhaz', 'label' => 'Színház', 'color' => '#5f96cf', 'text_color' => '#0f2133'],
-        ['id' => 'focipalya', 'label' => 'Focipálya', 'color' => '#2b72b8', 'text_color' => '#ffffff'],
-        ['id' => 'sportcsarnok', 'label' => 'Sportcsarnok', 'color' => '#f2e799', 'text_color' => '#0f2133'],
-        ['id' => 'sportkert', 'label' => 'Sportkert', 'color' => '#ffd200', 'text_color' => '#0f2133'],
-        ['id' => 'mozi', 'label' => 'Mozi', 'color' => '#d4aa2c', 'text_color' => '#0f2133'],
+        ['id' => 'main_stage',   'label' => 'Főszínpad',    'color' => '#2b72b8', 'text_color' => '#ffffff'],
+        ['id' => 'side_stage',   'label' => 'Mellékszínpad','color' => '#5f96cf', 'text_color' => '#ffffff'],
+        ['id' => 'workshop',     'label' => 'Workshop',     'color' => '#f2e799', 'text_color' => '#0f2133'],
+        ['id' => 'kids_zone',    'label' => 'Gyerekzóna',   'color' => '#ffd200', 'text_color' => '#0f2133'],
+        ['id' => 'food_court',   'label' => 'Étkezési tér', 'color' => '#c9d7e6', 'text_color' => '#0f2133'],
     ];
 }
-
 function dg_festival_program_get_venues(): array
 {
     $venues = get_option(DG_FESTIVAL_PROGRAM_VENUES_OPTION);
@@ -66,12 +64,11 @@ function dg_festival_program_get_venues(): array
 function dg_festival_program_get_default_program_types(): array
 {
     return [
-        ['id' => 'main', 'label' => 'Fő program'],
-        ['id' => 'registration', 'label' => 'Regisztrációhoz kötött programok'],
-        ['id' => 'continuous', 'label' => 'Folyamatos programok'],
+        ['id' => 'main',        'label' => 'Fő program'],
+        ['id' => 'workshop',    'label' => 'Workshop'],
+        ['id' => 'continuous',  'label' => 'Folyamatos program'],
     ];
 }
-
 function dg_festival_program_get_program_types(): array
 {
     $types = get_option(DG_FESTIVAL_PROGRAM_TAGS_OPTION, false);
@@ -100,95 +97,38 @@ function dg_festival_program_get_program_types(): array
 function dg_festival_program_get_default_schedule(): array
 {
     return [
-        ['time' => '09:00', 'note' => 'Érkezés, regisztráció', 'events' => []],
-        ['time' => '09:30', 'note' => 'Kapunyitás', 'events' => []],
-        [
-            'time' => '10:00',
-            'note' => '',
-            'events' => [
-                ['venue' => 'sportcsarnok', 'title' => 'Focikupa (I. helyszín)', 'type' => 'main'],
-                ['venue' => 'sportkert', 'title' => 'Focikupa (II. helyszín)', 'type' => 'main'],
-            ],
-        ],
-        [
-            'time' => '10:30',
-            'note' => '',
-            'events' => [
-                ['venue' => 'nagyszinpad', 'title' => 'Megnyitó', 'type' => 'main'],
-                ['venue' => 'sportcsarnok', 'title' => 'Focikupa (I. helyszín)', 'type' => 'main'],
-                ['venue' => 'sportkert', 'title' => 'Focikupa (II. helyszín)', 'type' => 'main'],
-            ],
-        ],
-        [
-            'time' => '11:00',
-            'note' => '',
-            'events' => [
-                ['venue' => 'nagyszinpad', 'title' => 'Kalap Jakab koncert', 'type' => 'main'],
-                ['venue' => 'szinhaz', 'title' => 'Ács Fruzsina stand-up műsor', 'type' => 'main'],
-                ['venue' => 'sportcsarnok', 'title' => 'Focikupa (I. helyszín)', 'type' => 'main'],
-                ['venue' => 'sportkert', 'title' => 'Focikupa (II. helyszín)', 'type' => 'main'],
-                ['venue' => 'nagyszinpad', 'title' => 'Haditechnikai Park élményprogram', 'type' => 'registration'],
-                ['venue' => 'nagyszinpad', 'title' => 'Balatoni sétahajózás', 'type' => 'registration'],
-            ],
-        ],
-        [
-            'time' => '12:00',
-            'note' => '',
-            'events' => [
-                ['venue' => 'nagyszinpad', 'title' => 'Zenés Buborékkaland, Móka Palota', 'type' => 'main'],
-                ['venue' => 'sportcsarnok', 'title' => 'KTE Kosárlabda Klub találkozó - Kísérőprogram: Veszprém Cheerleaders Show', 'type' => 'main'],
-                ['venue' => 'sportkert', 'title' => 'Focikupa (II. helyszín)', 'type' => 'main'],
-            ],
-        ],
-        [
-            'time' => '13:00',
-            'note' => '',
-            'events' => [
-                ['venue' => 'nagyszinpad', 'title' => 'Kicsi Gesztenye Klub koncert', 'type' => 'main'],
-                ['venue' => 'szinhaz', 'title' => 'Szabó Győző és Rezes Judit: Párkapcsolatunk színházi előadás', 'type' => 'main'],
-                ['venue' => 'sportcsarnok', 'title' => 'Veszprém Handball találkozó - Kísérőprogram: Veszprém Cheerleaders Show', 'type' => 'main'],
-                ['venue' => 'nagyszinpad', 'title' => 'Balatoni sétahajózás', 'type' => 'registration'],
-            ],
-        ],
-        [
-            'time' => '14:00',
-            'note' => '',
-            'events' => [
-                ['venue' => 'nagyszinpad', 'title' => 'Zenés Buborékkaland, Móka Palota', 'type' => 'main'],
-                ['venue' => 'sportcsarnok', 'title' => 'Tiszakécskei LC találkozó - Kísérőprogram: Veszprém Cheerleaders Show', 'type' => 'main'],
-                ['venue' => 'focipalya', 'title' => 'DUNA GROUP BIM Show', 'type' => 'main'],
-                ['venue' => 'nagyszinpad', 'title' => 'Haditechnikai Park élményprogram', 'type' => 'registration'],
-                ['venue' => 'nagyszinpad', 'title' => 'Balatoni sétahajózás', 'type' => 'registration'],
-            ],
-        ],
-        [
-            'time' => '15:00',
-            'note' => '',
-            'events' => [
-                ['venue' => 'nagyszinpad', 'title' => 'Zenés Buborékkaland, Móka Palota', 'type' => 'main'],
-                ['venue' => 'szinhaz', 'title' => 'Lakatos Péter, Longevity Coach: Életmód mítoszok', 'type' => 'main'],
-                ['venue' => 'sportcsarnok', 'title' => 'Aerobic', 'type' => 'main'],
-                ['venue' => 'mozi', 'title' => 'Duna Group Kvíz - kvízmesterrel', 'type' => 'main'],
-                ['venue' => 'nagyszinpad', 'title' => 'Balatoni sétahajózás', 'type' => 'registration'],
-            ],
-        ],
-        [
-            'time' => '16:00',
-            'note' => '',
-            'events' => [
-                ['venue' => 'nagyszinpad', 'title' => 'Don’t Stop The Queen koncert', 'type' => 'main'],
-                ['venue' => 'szinhaz', 'title' => 'A malacon nyert királylány / Majorka Színház', 'type' => 'main'],
-                ['venue' => 'sportcsarnok', 'title' => 'Jóga', 'type' => 'main'],
-                ['venue' => 'nagyszinpad', 'title' => 'Haditechnikai Park élményprogram', 'type' => 'registration'],
-            ],
-        ],
-        ['time' => '16:30', 'note' => '', 'events' => [['venue' => 'nagyszinpad', 'title' => 'EDDA Művek koncert', 'type' => 'main']]],
-        ['time' => '17:00', 'note' => '', 'events' => [['venue' => 'sportcsarnok', 'title' => 'Modern Táncház', 'type' => 'main']]],
-        ['time' => '18:00', 'note' => 'Rendezvény vége', 'events' => []],
-        ['time' => '18:30', 'note' => 'Kapuzárás', 'events' => []],
+        ['time' => '09:00', 'note' => 'Kapunyitás', 'events' => []],
+        ['time' => '09:30', 'note' => '', 'events' => [
+            ['venue' => 'kids_zone',  'title' => 'Gyermekprogramok kezdete', 'type' => 'continuous'],
+            ['venue' => 'food_court', 'title' => 'Reggeli büfé nyitás',      'type' => 'continuous'],
+        ]],
+        ['time' => '10:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'Megnyitó ünnepség',        'type' => 'main'],
+            ['venue' => 'workshop',   'title' => 'Workshop A – Bemutatkozás','type' => 'workshop'],
+        ]],
+        ['time' => '11:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'Vendégelőadó I.',           'type' => 'main'],
+            ['venue' => 'side_stage', 'title' => 'Akusztikus koncert',        'type' => 'main'],
+            ['venue' => 'workshop',   'title' => 'Workshop B – Csapatjáték', 'type' => 'workshop'],
+        ]],
+        ['time' => '12:30', 'note' => 'Ebédszünet', 'events' => [
+            ['venue' => 'food_court', 'title' => 'Ebéd', 'type' => 'continuous'],
+        ]],
+        ['time' => '14:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'Fő program – Csapatverseny',  'type' => 'main'],
+            ['venue' => 'side_stage', 'title' => 'Interaktív bemutató',         'type' => 'main'],
+            ['venue' => 'kids_zone',  'title' => 'Kézműves foglalkozás',        'type' => 'workshop'],
+        ]],
+        ['time' => '16:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'Díjátadó ceremónia',          'type' => 'main'],
+        ]],
+        ['time' => '17:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'Záró koncert',                'type' => 'main'],
+            ['venue' => 'food_court', 'title' => 'Esti büfé',                   'type' => 'continuous'],
+        ]],
+        ['time' => '19:00', 'note' => 'Rendezvény vége', 'events' => []],
     ];
 }
-
 function dg_festival_program_get_schedule(): array
 {
     $schedule = get_option(DG_FESTIVAL_PROGRAM_OPTION);
@@ -681,7 +621,28 @@ function dg_festival_program_handle_admin_save(): void
 }
 
 add_action('admin_post_dg_festival_program_save', 'dg_festival_program_handle_admin_save');
+add_action('admin_post_dg_festival_program_reset', 'dg_festival_program_handle_admin_reset');
 
+
+function dg_festival_program_handle_admin_reset(): void
+{
+    if (!current_user_can('manage_options')) {
+        wp_die(esc_html__('Nincs jogosultságod ehhez a művelethez.', 'dg-festival-program'));
+    }
+
+    check_admin_referer('dg_festival_program_reset', 'dg_festival_program_reset_nonce');
+
+    delete_option(DG_FESTIVAL_PROGRAM_OPTION);
+    delete_option(DG_FESTIVAL_PROGRAM_VENUES_OPTION);
+    delete_option(DG_FESTIVAL_PROGRAM_TAGS_OPTION);
+
+    wp_safe_redirect(add_query_arg([
+        'page'    => 'dg-program',
+        'updated' => '1',
+        'reset'   => '1',
+    ], admin_url('admin.php')));
+    exit;
+}
 function dg_festival_program_render_admin_page(): void
 {
     if (!current_user_can('edit_posts')) {
@@ -695,11 +656,17 @@ function dg_festival_program_render_admin_page(): void
     <div class="wrap dg-admin-wrap">
         <h1>DG Program szerkesztő</h1>
 
-        <?php if (isset($_GET['updated']) && $_GET['updated'] === '1') : ?>
+        <?php if (isset($_GET['reset']) && $_GET['reset'] === '1') : ?>
+                <div class="notice notice-warning is-dismissible">
+                    <p>Összes adat törölve. Az alapértelmezett adatok visszaállnak első betöltéskor.</p>
+                </div>
+                <?php endif; ?>
+                <?php if (isset($_GET['updated']) && $_GET['updated'] === '1' && !isset($_GET['reset'])) : ?>
             <div class="notice notice-success is-dismissible">
                 <p>Program mentve.</p>
             </div>
         <?php endif; ?>
+                <?php endif; ?>
 
         <p>Az első oszlop az időpont, utána a lent megadott helyszínek jelennek meg oszlopként. A tag-ek opcionálisak, bővíthetők és átírhatók. Több idősávon át tartó programnál add meg a vége időpontot.</p>
 
@@ -712,7 +679,17 @@ function dg_festival_program_render_admin_page(): void
                 <button type="button" class="button button-secondary" data-dg-add-type>Új tag</button>
                 <button type="button" class="button button-secondary" data-dg-add-row>Új időpont</button>
                 <button type="submit" class="button button-primary">Program mentése</button>
-            </div>
+            
+
+                <?php wp_nonce_field('dg_festival_program_reset', 'dg_festival_program_reset_nonce'); ?>
+                <button
+                    type="button"
+                    class="button button-link-delete dg-admin-reset-btn"
+                    data-confirm="<?php echo esc_attr('Biztosan törlöd az összes helyszínt, programot és beállítást? Ez a művelet nem vonható vissza.'); ?>"
+                    data-action="<?php echo esc_url(admin_url('admin-post.php')); ?>"
+                    data-nonce-name="dg_festival_program_reset_nonce"
+                    data-form-action="dg_festival_program_reset"
+                >Összes adat törlése</button></div>
 
             <section class="dg-admin-panel">
                 <h2>Helyszínek</h2>
@@ -958,7 +935,28 @@ function dg_festival_program_render_admin_page(): void
             types.querySelectorAll("[data-dg-type]").forEach(bindType);
             schedule.querySelectorAll("[data-dg-row]").forEach(bindRow);
         })();
-    </script>
+    
+
+            // Reset gomb kezelő
+            (function () {
+                var resetBtn = document.querySelector('.dg-admin-reset-btn');
+                if (!resetBtn) return;
+                resetBtn.addEventListener('click', function () {
+                    if (!window.confirm(resetBtn.getAttribute('data-confirm'))) return;
+                    var form = document.createElement('form');
+                    form.method = 'post';
+                    form.action = resetBtn.getAttribute('data-action');
+                    var actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = resetBtn.getAttribute('data-form-action');
+                    form.appendChild(actionInput);
+                    var nonceInput = document.querySelector('input[name="' + resetBtn.getAttribute('data-nonce-name') + '"]');
+                    if (nonceInput) form.appendChild(nonceInput.cloneNode());
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            })();</script>
     <?php
 }
 
