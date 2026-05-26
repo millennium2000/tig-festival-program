@@ -2,7 +2,7 @@
 /**
  * Plugin Name: DG Festival Program
  * Description: Festival and family day program schedule shortcode.
- * Version: 0.5.0
+ * Version: 0.6.0
  * Author: Duna Group
  * Text Domain: dg-festival-program
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('DG_FESTIVAL_PROGRAM_VERSION', '0.5.0');
+define('DG_FESTIVAL_PROGRAM_VERSION', '0.6.0');
 define('DG_FESTIVAL_PROGRAM_PATH', plugin_dir_path(__FILE__));
 define('DG_FESTIVAL_PROGRAM_URL', plugin_dir_url(__FILE__));
 define('DG_FESTIVAL_PROGRAM_OPTION', 'dg_festival_program_schedule');
@@ -370,8 +370,13 @@ function dg_festival_program_enqueue_assets(): void
     );
 }
 
-function dg_festival_program_shortcode(): string
+function dg_festival_program_shortcode(array $atts = []): string
 {
+    $atts = shortcode_atts([
+        'title'    => '',
+        'subtitle' => '',
+    ], $atts, 'dg_program');
+
     dg_festival_program_enqueue_assets();
 
     $template_candidates = [
@@ -390,11 +395,12 @@ function dg_festival_program_shortcode(): string
     }
 
     if ($template === '') {
-        return dg_festival_program_render_program_inline();
+        return dg_festival_program_render_program_inline((string) $atts['title'], (string) $atts['subtitle']);
     }
 
     ob_start();
-    include $template;
+        // Shortcode attribútumok átadása a template-nek
+include $template;
     $html = trim((string) ob_get_clean());
 
     if ($html === '' && current_user_can('manage_options')) {
@@ -408,7 +414,7 @@ add_shortcode('dg_program', 'dg_festival_program_shortcode');
 add_shortcode('dg_festival_program', 'dg_festival_program_shortcode');
 add_shortcode('festival_program', 'dg_festival_program_shortcode');
 
-function dg_festival_program_render_program_inline(): string
+function dg_festival_program_render_program_inline(string $title = '', string $subtitle = ''): string
 {
     $venues = dg_festival_program_get_venues();
     $schedule = dg_festival_program_get_schedule();
@@ -447,8 +453,8 @@ function dg_festival_program_render_program_inline(): string
     ?>
     <div class="dg-program">
       <div class="dg-program-head">
-        <div class="dg-program-title">I. DUNA GROUP CSALÁDI NAP</div>
-        <div class="dg-program-subtitle">Zánka · Program</div>
+        <div class="dg-program-title"><?php echo esc_html($title); ?></div>
+        <div class="dg-program-subtitle"><?php echo esc_html($subtitle); ?></div>
       </div>
 
       <div class="dg-program-legend">
