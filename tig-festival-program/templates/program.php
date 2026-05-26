@@ -9,7 +9,12 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
 
     <div class="tig-program-head">
         <div class="tig-program-title"><?php echo esc_html($title); ?></div>
+        <?php if ($subtitle !== '') : ?>
         <div class="tig-program-subtitle"><?php echo esc_html($subtitle); ?></div>
+        <?php endif; ?>
+        <?php if (!empty($formatted_date)) : ?>
+        <div class="tig-program-date"><?php echo esc_html($formatted_date); ?></div>
+        <?php endif; ?>
     </div>
 
     <?php if ($show_tabs) : ?>
@@ -75,14 +80,14 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
         </div>
 
         <?php if (empty($schedule)) : ?>
-            <p class="tig-program-empty"><?php esc_html_e('Erre a napra még nincs program megadva.', 'tig-festival-program'); ?></p>
+            <p class="tig-program-empty"><?php esc_html_e('Erre a napra mÃ©g nincs program megadva.', 'tig-festival-program'); ?></p>
         <?php else : ?>
 
         <div class="tig-program-desktop">
             <table class="tig-program-table" role="grid">
                 <thead>
                     <tr>
-                        <th class="tig-time-head" scope="col"><?php esc_html_e('Időpont', 'tig-festival-program'); ?></th>
+                        <th class="tig-time-head" scope="col"><?php esc_html_e('IdÅpont', 'tig-festival-program'); ?></th>
                         <?php foreach ($venues as $venue) : ?>
                         <th scope="col"
                             style="--tig-venue-bg: <?php echo esc_attr($venue['color']); ?>; --tig-venue-fg: <?php echo esc_attr($venue['text_color']); ?>;"
@@ -129,7 +134,7 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
                             <?php if ($event) : ?>
                             <span class="tig-event-title"><?php echo esc_html($event['title'] ?? ''); ?></span>
                             <?php if (!empty($event['end_time'])) : ?>
-                            <span class="tig-event-time"><?php echo esc_html($row['time'] ?? ''); ?>–<?php echo esc_html($event['end_time']); ?></span>
+                            <span class="tig-event-time"><?php echo esc_html($row['time'] ?? ''); ?>â<?php echo esc_html($event['end_time']); ?></span>
                             <?php endif; ?>
                             <?php endif; ?>
                         </td>
