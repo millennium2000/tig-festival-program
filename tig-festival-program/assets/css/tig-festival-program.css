@@ -424,7 +424,7 @@
   }
 
   .tig-has-venue-tooltip::after {
-    content: "HelyszÃ­n: " attr(data-venue-tooltip);
+    content: "HelyszÃÂ­n: " attr(data-venue-tooltip);
     position: absolute;
     left: 50%;
     bottom: calc(100% + 8px);
@@ -543,4 +543,88 @@
 #tig-venue-tooltip.tig-tooltip-visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+
+/* ── Többnapos fülek ──────────────────────────────────────────────────────── */
+.tig-day-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #c9d7e6;
+    padding-bottom: 0;
+}
+
+.tig-day-tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: 8px 18px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b8cad;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.tig-day-tab:hover {
+    color: #102b46;
+    background: rgba(43, 114, 184, 0.06);
+}
+
+.tig-day-tab--active {
+    color: #102b46;
+    border-bottom-color: #2b72b8;
+    background: rgba(43, 114, 184, 0.08);
+}
+
+.tig-day-tab-date {
+    font-size: 11px;
+    font-weight: 400;
+    color: #6b8cad;
+}
+
+.tig-day-tab--active .tig-day-tab-date {
+    color: #2b72b8;
+}
+
+/* ── Nap panel megjelenítés ───────────────────────────────────────────────── */
+.tig-program-day {
+    display: none;
+}
+
+.tig-program-day--active {
+    display: block;
+}
+
+/* Egyelmes (fülmentes) esetben mindig látható */
+.tig-program:not(:has(.tig-day-tabs)) .tig-program-day {
+    display: block;
+}
+
+/* ── Aktuális időpont kiemelés ────────────────────────────────────────────── */
+.tig-row--current td,
+.tig-row--current .tig-mobile-row {
+    background: rgba(43, 114, 184, 0.07);
+}
+
+.tig-row--current .tig-time span::before {
+    content: "▶ ";
+    color: #2b72b8;
+    font-size: 10px;
+}
+
+/* ── Üres nap üzenet ──────────────────────────────────────────────────────── */
+.tig-program-empty {
+    padding: 24px;
+    text-align: center;
+    color: #6b8cad;
+    font-style: italic;
 }
