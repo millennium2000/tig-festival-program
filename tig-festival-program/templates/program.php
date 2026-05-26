@@ -67,7 +67,7 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
         <?php endif; ?>
     >
         <div class="tig-program-toolbar">
-            <button type="button" class="tig-jump-now-btn" aria-label="<?php esc_attr_e('Ugrás az aktuális időponthoz', 'tig-festival-program'); ?>">&#9654; Most</button>
+            <button type="button" class="tig-jump-now-btn" aria-label="<?php esc_attr_e('UgrÃ¡s az aktuÃ¡lis idÅponthoz', 'tig-festival-program'); ?>">&#9654; Most</button>
         </div>
 
         <div class="tig-program-legend">
@@ -84,14 +84,14 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
         </div>
 
         <?php if (empty($schedule)) : ?>
-            <p class="tig-program-empty"><?php esc_html_e('Erre a napra mÃÂ©g nincs program megadva.', 'tig-festival-program'); ?></p>
+            <p class="tig-program-empty"><?php esc_html_e('Erre a napra mÃÂÃÂ©g nincs program megadva.', 'tig-festival-program'); ?></p>
         <?php else : ?>
 
         <div class="tig-program-desktop">
             <table class="tig-program-table" role="grid">
                 <thead>
                     <tr>
-                        <th class="tig-time-head" scope="col"><?php esc_html_e('IdÃÂpont', 'tig-festival-program'); ?></th>
+                        <th class="tig-time-head" scope="col"><?php esc_html_e('IdÃÂÃÂpont', 'tig-festival-program'); ?></th>
                         <?php foreach ($venues as $venue) : ?>
                         <th scope="col"
                             style="--tig-venue-bg: <?php echo esc_attr($venue['color']); ?>; --tig-venue-fg: <?php echo esc_attr($venue['text_color']); ?>;"
@@ -136,10 +136,19 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
                             <?php endif; ?>
                         >
                             <?php if ($event) : ?>
-                            <span class="tig-event-title"><?php echo esc_html($event['title'] ?? ''); ?></span>
-                            <?php if (!empty($event['end_time'])) : ?>
-                            <span class="tig-event-time"><?php echo esc_html($row['time'] ?? ''); ?>Ã¢ÂÂ<?php echo esc_html($event['end_time']); ?></span>
-                            <?php endif; ?>
+                            <button
+                                class="tig-event-btn<?php echo (!empty($event['description']) || !empty($event['link']) || !empty($event['image_url'])) ? ' tig-event-btn--has-detail' : ''; ?>"
+                                data-tig-modal
+                                data-title="<?php echo esc_attr($event['title'] ?? ''); ?>"
+                                data-venue="<?php echo esc_attr($venue['label'] ?? ''); ?>"
+                                data-venue-color="<?php echo esc_attr($venue['color'] ?? ''); ?>"
+                                data-venue-fg="<?php echo esc_attr($venue['text_color'] ?? ''); ?>"
+                                data-time="<?php echo esc_attr(($row['time'] ?? '') . (!empty($event['end_time']) ? '–' . $event['end_time'] : '')); ?>"
+                                data-description="<?php echo esc_attr($event['description'] ?? ''); ?>"
+                                data-link="<?php echo esc_attr($event['link'] ?? ''); ?>"
+                                data-image="<?php echo esc_attr($event['image_url'] ?? ''); ?>"
+                                type="button"
+                            ><span class="tig-event-title"><?php echo esc_html($event['title'] ?? ''); ?></span><?php if (!empty($event['end_time'])) : ?><span class="tig-event-time"><?php echo esc_html($row['time'] ?? ''); ?>–<?php echo esc_html($event['end_time']); ?></span><?php endif; ?></button>
                             <?php endif; ?>
                         </td>
                         <?php endforeach; ?>
@@ -171,7 +180,19 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
                         <?php if ($venue) : ?>
                         <span class="tig-mobile-venue-label"><?php echo esc_html($venue['label']); ?></span>
                         <?php endif; ?>
-                        <span class="tig-mobile-event-title"><?php echo esc_html($event['title'] ?? ''); ?></span>
+                        <button
+                        class="tig-event-btn<?php echo (!empty($event['description']) || !empty($event['link']) || !empty($event['image_url'])) ? ' tig-event-btn--has-detail' : ''; ?>"
+                        data-tig-modal
+                        data-title="<?php echo esc_attr($event['title'] ?? ''); ?>"
+                        data-venue="<?php echo esc_attr($venue ? $venue['label'] : ''); ?>"
+                        data-venue-color="<?php echo esc_attr($venue ? $venue['color'] : ''); ?>"
+                        data-venue-fg="<?php echo esc_attr($venue ? $venue['text_color'] : ''); ?>"
+                        data-time="<?php echo esc_attr($row['time'] ?? ''); ?>"
+                        data-description="<?php echo esc_attr($event['description'] ?? ''); ?>"
+                        data-link="<?php echo esc_attr($event['link'] ?? ''); ?>"
+                        data-image="<?php echo esc_attr($event['image_url'] ?? ''); ?>"
+                        type="button"
+                    ><span class="tig-mobile-event-title"><?php echo esc_html($event['title'] ?? ''); ?></span></button>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -185,4 +206,23 @@ $uid       = 'tig-' . substr(md5(uniqid('', true)), 0, 8);
 
     <?php endforeach; // days ?>
 
+
+    <div class="tig-modal" id="<?php echo esc_attr($uid); ?>-modal" role="dialog" aria-modal="true" aria-labelledby="<?php echo esc_attr($uid); ?>-modal-title" hidden>
+        <div class="tig-modal-backdrop" data-tig-modal-close></div>
+        <div class="tig-modal-box">
+            <div class="tig-modal-header">
+                <div class="tig-modal-venue-chip"></div>
+                <div class="tig-modal-meta">
+                    <h2 class="tig-modal-title"></h2>
+                    <div class="tig-modal-time"></div>
+                </div>
+                <button class="tig-modal-close" data-tig-modal-close aria-label="Bezárás" type="button">&#10005;</button>
+            </div>
+            <div class="tig-modal-body">
+                <img class="tig-modal-image" src="" alt="" hidden>
+                <p class="tig-modal-description"></p>
+                <a class="tig-modal-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Részletek &#8594;</a>
+            </div>
+        </div>
+    </div>
 </div><!-- .tig-program -->
