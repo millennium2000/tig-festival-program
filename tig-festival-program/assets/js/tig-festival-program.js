@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    // Ã¢ÂÂÃ¢ÂÂ Tooltip Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+    // ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Tooltip ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
     var tooltip = null;
 
     function createTooltip() {
@@ -42,7 +42,7 @@
         tooltip.style.top  = top  + "px";
     }
 
-    // Ã¢ÂÂÃ¢ÂÂ FÃÂ¼lek (day tabs) Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+    // ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ FÃÂÃÂ¼lek (day tabs) ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
     function initTabs(wrapper) {
         var tabs  = wrapper.querySelectorAll(".tig-day-tab");
         var panels = wrapper.querySelectorAll(".tig-program-day");
@@ -64,7 +64,7 @@
         });
     }
 
-    // Ã¢ÂÂÃ¢ÂÂ AktuÃÂ¡lis idÃÂpont kiemelÃÂ©s Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+    // ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ AktuÃÂÃÂ¡lis idÃÂÃÂpont kiemelÃÂÃÂ©s ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
     function timeToMinutes(str) {
         if (!str) return null;
         var parts = str.split(":");
@@ -98,7 +98,62 @@
         return !!currentRow;
     }
 
-    // Ã¢ÂÂÃ¢ÂÂ Init Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+    // ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ Init ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
+
+    // ── Modal ────────────────────────────────────────────────────────────────
+    var activeModal = null;
+
+    function openModal(wrapper, btn) {
+        var modal = wrapper.querySelector(".tig-modal");
+        if (!modal) return;
+        var title       = btn.getAttribute("data-title")       || "";
+        var venue       = btn.getAttribute("data-venue")       || "";
+        var venueColor  = btn.getAttribute("data-venue-color") || "";
+        var venueFg     = btn.getAttribute("data-venue-fg")    || "#fff";
+        var time        = btn.getAttribute("data-time")        || "";
+        var description = btn.getAttribute("data-description") || "";
+        var link        = btn.getAttribute("data-link")        || "";
+        var image       = btn.getAttribute("data-image")       || "";
+
+        modal.querySelector(".tig-modal-title").textContent       = title;
+        modal.querySelector(".tig-modal-time").textContent        = time;
+        modal.querySelector(".tig-modal-description").textContent = description;
+        var chip = modal.querySelector(".tig-modal-venue-chip");
+        chip.textContent      = venue;
+        chip.style.background = venueColor;
+        chip.style.color      = venueFg;
+
+        var imgEl = modal.querySelector(".tig-modal-image");
+        if (image) { imgEl.src = image; imgEl.alt = title; imgEl.hidden = false; }
+        else       { imgEl.hidden = true; imgEl.src = ""; }
+
+        var linkEl = modal.querySelector(".tig-modal-link");
+        if (link) { linkEl.href = link; linkEl.hidden = false; }
+        else      { linkEl.hidden = true; }
+
+        modal.hidden = false;
+        document.body.classList.add("tig-modal-open");
+        activeModal = { modal: modal, trigger: btn };
+        var closeBtn = modal.querySelector(".tig-modal-close");
+        if (closeBtn) closeBtn.focus();
+    }
+
+    function closeModal() {
+        if (!activeModal) return;
+        activeModal.modal.hidden = true;
+        document.body.classList.remove("tig-modal-open");
+        if (activeModal.trigger) activeModal.trigger.focus();
+        activeModal = null;
+    }
+
+    function initModal(wrapper) {
+        wrapper.addEventListener("click", function (e) {
+            var btn = e.target.closest("[data-tig-modal]");
+            if (btn) { e.preventDefault(); openModal(wrapper, btn); return; }
+            if (e.target.closest("[data-tig-modal-close]")) { closeModal(); }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".tig-program").forEach(function (wrapper) {
             // Tooltip
@@ -111,39 +166,47 @@
                 el.addEventListener("blur",       hideTooltip);
             });
 
-            // FÃÂ¼lek
+            // FÃÂÃÂ¼lek
             initTabs(wrapper);
 
-            // AktuÃÂ¡lis kiemelÃÂ©s
-            // "Ugrás az aktuális időponthoz" gomb
+            // AktuÃÂÃÂ¡lis kiemelÃÂÃÂ©s
+            // "UgrÃ¡s az aktuÃ¡lis idÅponthoz" gomb
             var jumpBtn = wrapper.querySelector(".tig-jump-now-btn");
             if (jumpBtn) {
                 jumpBtn.addEventListener("click", function () {
                     var found = highlightCurrentRow(wrapper, true);
                     if (!found) {
-                        jumpBtn.textContent = "Nincs aktuális időpont";
+                        jumpBtn.textContent = "Nincs aktuÃ¡lis idÅpont";
                         setTimeout(function () { jumpBtn.innerHTML = "&#9654; Most"; }, 2000);
                     }
                 });
             }
 
+            // Modal
+            initModal(wrapper);
+
             highlightCurrentRow(wrapper, false);
         });
 
-        // FrissÃÂ­tÃÂ©s percenkÃÂ©nt
-        setInterval(function () {
+        // FrissÃÂÃÂ­tÃÂÃÂ©s percenkÃÂÃÂ©nt
+        // ESC billentyű
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && activeModal) { closeModal(); }
+        });
+
+                setInterval(function () {
             document.querySelectorAll(".tig-program").forEach(function(w) { highlightCurrentRow(w, false); });
         }, 60000);
 
 
-    // ââ Export âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+    // Ã¢ÂÂÃ¢ÂÂ Export Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     var exportBtn = document.querySelector('.tig-export-btn');
     if (exportBtn) {
         exportBtn.addEventListener('click', function () {
             var nonce   = exportBtn.getAttribute('data-nonce');
             var ajaxUrl = exportBtn.getAttribute('data-ajax-url');
             exportBtn.disabled = true;
-            exportBtn.textContent = 'ExportÃ¡lÃ¡s...';
+            exportBtn.textContent = 'ExportÃÂ¡lÃÂ¡s...';
 
             fetch(ajaxUrl, {
                 method: 'POST',
@@ -166,12 +229,12 @@
             .catch(function (e) { alert('Export hiba: ' + e.message); })
             .finally(function () {
                 exportBtn.disabled = false;
-                exportBtn.innerHTML = '&#8595; ExportÃ¡lÃ¡s (JSON)';
+                exportBtn.innerHTML = '&#8595; ExportÃÂ¡lÃÂ¡s (JSON)';
             });
         });
     }
 
-    // ââ Import âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+    // Ã¢ÂÂÃ¢ÂÂ Import Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     var importFile   = document.querySelector('.tig-import-file');
     var importHidden = document.querySelector('.tig-import-json-hidden');
     var importTrigger = document.querySelector('.tig-import-trigger');
@@ -181,7 +244,7 @@
         importFile.addEventListener('change', function () {
             var file = importFile.files[0];
             if (!file) return;
-            if (!file.name.endsWith('.json')) { alert('Csak .json fÃ¡jlt lehet importÃ¡lni.'); return; }
+            if (!file.name.endsWith('.json')) { alert('Csak .json fÃÂ¡jlt lehet importÃÂ¡lni.'); return; }
 
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -190,7 +253,7 @@
                     importHidden.value = JSON.stringify(parsed);
                     importTrigger.value = '1';
                     importForm.action = importForm.action.replace('tig_festival_program_save', 'tig_festival_program_import');
-                    if (window.confirm('Biztosan importÃ¡lod a fÃ¡jlt? A jelenlegi program felÃ¼lÃ­rÃ³dik.')) {
+                    if (window.confirm('Biztosan importÃÂ¡lod a fÃÂ¡jlt? A jelenlegi program felÃÂ¼lÃÂ­rÃÂ³dik.')) {
                         importForm.submit();
                     } else {
                         importHidden.value = '';
@@ -198,7 +261,7 @@
                         importForm.action = importForm.action.replace('tig_festival_program_import', 'tig_festival_program_save');
                     }
                 } catch (err) {
-                    alert('ÃrvÃ©nytelen JSON fÃ¡jl.');
+                    alert('ÃÂrvÃÂ©nytelen JSON fÃÂ¡jl.');
                 }
             };
             reader.readAsText(file);
