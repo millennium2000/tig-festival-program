@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    // ââ Tooltip âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+    // Ã¢ÂÂÃ¢ÂÂ Tooltip Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     var tooltip = null;
 
     function createTooltip() {
@@ -42,7 +42,7 @@
         tooltip.style.top  = top  + "px";
     }
 
-    // ââ FÃ¼lek (day tabs) ââââââââââââââââââââââââââââââââââââââââââââââââââââ
+    // Ã¢ÂÂÃ¢ÂÂ FÃÂ¼lek (day tabs) Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     function initTabs(wrapper) {
         var tabs  = wrapper.querySelectorAll(".tig-day-tab");
         var panels = wrapper.querySelectorAll(".tig-program-day");
@@ -64,7 +64,7 @@
         });
     }
 
-    // ââ AktuÃ¡lis idÅpont kiemelÃ©s âââââââââââââââââââââââââââââââââââââââââââ
+    // Ã¢ÂÂÃ¢ÂÂ AktuÃÂ¡lis idÃÂpont kiemelÃÂ©s Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     function timeToMinutes(str) {
         if (!str) return null;
         var parts = str.split(":");
@@ -72,7 +72,7 @@
         return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
     }
 
-    function highlightCurrentRow(wrapper) {
+    function highlightCurrentRow(wrapper, scroll) {
         var now = new Date();
         var currentMin = now.getHours() * 60 + now.getMinutes();
         var rows = wrapper.querySelectorAll(".tig-program-day--active .tig-mobile-row, .tig-program-day--active tbody tr");
@@ -93,11 +93,12 @@
         rows.forEach(function (r) { r.classList.remove("tig-row--current"); });
         if (currentRow) {
             currentRow.classList.add("tig-row--current");
-            currentRow.scrollIntoView({behavior: "smooth", block: "nearest"});
+            if (scroll) { currentRow.scrollIntoView({behavior: "smooth", block: "nearest"}); }
         }
+        return !!currentRow;
     }
 
-    // ââ Init ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+    // Ã¢ÂÂÃ¢ÂÂ Init Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".tig-program").forEach(function (wrapper) {
             // Tooltip
@@ -110,27 +111,39 @@
                 el.addEventListener("blur",       hideTooltip);
             });
 
-            // FÃ¼lek
+            // FÃÂ¼lek
             initTabs(wrapper);
 
-            // AktuÃ¡lis kiemelÃ©s
-            highlightCurrentRow(wrapper);
+            // AktuÃÂ¡lis kiemelÃÂ©s
+            // "Ugrás az aktuális időponthoz" gomb
+            var jumpBtn = wrapper.querySelector(".tig-jump-now-btn");
+            if (jumpBtn) {
+                jumpBtn.addEventListener("click", function () {
+                    var found = highlightCurrentRow(wrapper, true);
+                    if (!found) {
+                        jumpBtn.textContent = "Nincs aktuális időpont";
+                        setTimeout(function () { jumpBtn.innerHTML = "&#9654; Most"; }, 2000);
+                    }
+                });
+            }
+
+            highlightCurrentRow(wrapper, false);
         });
 
-        // FrissÃ­tÃ©s percenkÃ©nt
+        // FrissÃÂ­tÃÂ©s percenkÃÂ©nt
         setInterval(function () {
-            document.querySelectorAll(".tig-program").forEach(highlightCurrentRow);
+            document.querySelectorAll(".tig-program").forEach(function(w) { highlightCurrentRow(w, false); });
         }, 60000);
 
 
-    // ── Export ───────────────────────────────────────────────────────────────
+    // ââ Export âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
     var exportBtn = document.querySelector('.tig-export-btn');
     if (exportBtn) {
         exportBtn.addEventListener('click', function () {
             var nonce   = exportBtn.getAttribute('data-nonce');
             var ajaxUrl = exportBtn.getAttribute('data-ajax-url');
             exportBtn.disabled = true;
-            exportBtn.textContent = 'Exportálás...';
+            exportBtn.textContent = 'ExportÃ¡lÃ¡s...';
 
             fetch(ajaxUrl, {
                 method: 'POST',
@@ -153,12 +166,12 @@
             .catch(function (e) { alert('Export hiba: ' + e.message); })
             .finally(function () {
                 exportBtn.disabled = false;
-                exportBtn.innerHTML = '&#8595; Exportálás (JSON)';
+                exportBtn.innerHTML = '&#8595; ExportÃ¡lÃ¡s (JSON)';
             });
         });
     }
 
-    // ── Import ───────────────────────────────────────────────────────────────
+    // ââ Import âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
     var importFile   = document.querySelector('.tig-import-file');
     var importHidden = document.querySelector('.tig-import-json-hidden');
     var importTrigger = document.querySelector('.tig-import-trigger');
@@ -168,7 +181,7 @@
         importFile.addEventListener('change', function () {
             var file = importFile.files[0];
             if (!file) return;
-            if (!file.name.endsWith('.json')) { alert('Csak .json fájlt lehet importálni.'); return; }
+            if (!file.name.endsWith('.json')) { alert('Csak .json fÃ¡jlt lehet importÃ¡lni.'); return; }
 
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -177,7 +190,7 @@
                     importHidden.value = JSON.stringify(parsed);
                     importTrigger.value = '1';
                     importForm.action = importForm.action.replace('tig_festival_program_save', 'tig_festival_program_import');
-                    if (window.confirm('Biztosan importálod a fájlt? A jelenlegi program felülíródik.')) {
+                    if (window.confirm('Biztosan importÃ¡lod a fÃ¡jlt? A jelenlegi program felÃ¼lÃ­rÃ³dik.')) {
                         importForm.submit();
                     } else {
                         importHidden.value = '';
@@ -185,7 +198,7 @@
                         importForm.action = importForm.action.replace('tig_festival_program_import', 'tig_festival_program_save');
                     }
                 } catch (err) {
-                    alert('Érvénytelen JSON fájl.');
+                    alert('ÃrvÃ©nytelen JSON fÃ¡jl.');
                 }
             };
             reader.readAsText(file);
