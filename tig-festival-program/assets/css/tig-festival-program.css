@@ -424,7 +424,7 @@
   }
 
   .tig-has-venue-tooltip::after {
-    content: "HelyszÃÂ­n: " attr(data-venue-tooltip);
+    content: "HelyszÃÂÃÂ­n: " attr(data-venue-tooltip);
     position: absolute;
     left: 50%;
     bottom: calc(100% + 8px);
@@ -546,7 +546,7 @@
 }
 
 
-/* ── Többnapos fülek ──────────────────────────────────────────────────────── */
+/* ââ TÃ¶bbnapos fÃ¼lek ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 .tig-day-tabs {
     display: flex;
     flex-wrap: wrap;
@@ -595,7 +595,7 @@
     color: #2b72b8;
 }
 
-/* ── Nap panel megjelenítés ───────────────────────────────────────────────── */
+/* ââ Nap panel megjelenÃ­tÃ©s âââââââââââââââââââââââââââââââââââââââââââââââââ */
 .tig-program-day {
     display: none;
 }
@@ -604,27 +604,36 @@
     display: block;
 }
 
-/* Egyelmes (fülmentes) esetben mindig látható */
+/* Egyelmes (fÃ¼lmentes) esetben mindig lÃ¡thatÃ³ */
 .tig-program:not(:has(.tig-day-tabs)) .tig-program-day {
     display: block;
 }
 
-/* ── Aktuális időpont kiemelés ────────────────────────────────────────────── */
+/* ââ AktuÃ¡lis idÅpont kiemelÃ©s ââââââââââââââââââââââââââââââââââââââââââââââ */
 .tig-row--current td,
 .tig-row--current .tig-mobile-row {
     background: rgba(43, 114, 184, 0.07);
 }
 
 .tig-row--current .tig-time span::before {
-    content: "▶ ";
+    content: "â¶ ";
     color: #2b72b8;
     font-size: 10px;
 }
 
-/* ── Üres nap üzenet ──────────────────────────────────────────────────────── */
+/* ââ Ãres nap Ã¼zenet ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ */
 .tig-program-empty {
     padding: 24px;
     text-align: center;
     color: #6b8cad;
     font-style: italic;
+}
+
+/* ── Fejléc dátum ─────────────────────────────────────────────────────────── */
+.tig-program-date {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b8cad;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
 }
