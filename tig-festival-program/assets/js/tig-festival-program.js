@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    // ── Tooltip ─────────────────────────────────────────────────────────────
+    // ââ Tooltip âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
     var tooltip = null;
 
     function createTooltip() {
@@ -42,7 +42,7 @@
         tooltip.style.top  = top  + "px";
     }
 
-    // ── Fülek (day tabs) ────────────────────────────────────────────────────
+    // ââ FÃ¼lek (day tabs) ââââââââââââââââââââââââââââââââââââââââââââââââââââ
     function initTabs(wrapper) {
         var tabs  = wrapper.querySelectorAll(".tig-day-tab");
         var panels = wrapper.querySelectorAll(".tig-program-day");
@@ -64,7 +64,7 @@
         });
     }
 
-    // ── Aktuális időpont kiemelés ───────────────────────────────────────────
+    // ââ AktuÃ¡lis idÅpont kiemelÃ©s âââââââââââââââââââââââââââââââââââââââââââ
     function timeToMinutes(str) {
         if (!str) return null;
         var parts = str.split(":");
@@ -97,7 +97,7 @@
         }
     }
 
-    // ── Init ────────────────────────────────────────────────────────────────
+    // ââ Init ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".tig-program").forEach(function (wrapper) {
             // Tooltip
@@ -110,16 +110,88 @@
                 el.addEventListener("blur",       hideTooltip);
             });
 
-            // Fülek
+            // FÃ¼lek
             initTabs(wrapper);
 
-            // Aktuális kiemelés
+            // AktuÃ¡lis kiemelÃ©s
             highlightCurrentRow(wrapper);
         });
 
-        // Frissítés percenként
+        // FrissÃ­tÃ©s percenkÃ©nt
         setInterval(function () {
             document.querySelectorAll(".tig-program").forEach(highlightCurrentRow);
         }, 60000);
+
+
+    // ── Export ───────────────────────────────────────────────────────────────
+    var exportBtn = document.querySelector('.tig-export-btn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function () {
+            var nonce   = exportBtn.getAttribute('data-nonce');
+            var ajaxUrl = exportBtn.getAttribute('data-ajax-url');
+            exportBtn.disabled = true;
+            exportBtn.textContent = 'Exportálás...';
+
+            fetch(ajaxUrl, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'action=tig_festival_program_export&nonce=' + encodeURIComponent(nonce)
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (resp) {
+                if (!resp.success) { alert('Export hiba: ' + (resp.data && resp.data.message ? resp.data.message : 'Ismeretlen hiba')); return; }
+                var blob = new Blob([JSON.stringify(resp.data, null, 2)], {type: 'application/json'});
+                var url  = URL.createObjectURL(blob);
+                var a    = document.createElement('a');
+                var date = new Date().toISOString().substring(0, 10);
+                a.href     = url;
+                a.download = 'tig-program-export-' + date + '.json';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1000);
+            })
+            .catch(function (e) { alert('Export hiba: ' + e.message); })
+            .finally(function () {
+                exportBtn.disabled = false;
+                exportBtn.innerHTML = '&#8595; Exportálás (JSON)';
+            });
+        });
+    }
+
+    // ── Import ───────────────────────────────────────────────────────────────
+    var importFile   = document.querySelector('.tig-import-file');
+    var importHidden = document.querySelector('.tig-import-json-hidden');
+    var importTrigger = document.querySelector('.tig-import-trigger');
+    var importForm   = importFile && importFile.closest('form');
+
+    if (importFile && importHidden && importForm) {
+        importFile.addEventListener('change', function () {
+            var file = importFile.files[0];
+            if (!file) return;
+            if (!file.name.endsWith('.json')) { alert('Csak .json fájlt lehet importálni.'); return; }
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    var parsed = JSON.parse(e.target.result);
+                    importHidden.value = JSON.stringify(parsed);
+                    importTrigger.value = '1';
+                    importForm.action = importForm.action.replace('tig_festival_program_save', 'tig_festival_program_import');
+                    if (window.confirm('Biztosan importálod a fájlt? A jelenlegi program felülíródik.')) {
+                        importForm.submit();
+                    } else {
+                        importHidden.value = '';
+                        importTrigger.value = '0';
+                        importForm.action = importForm.action.replace('tig_festival_program_import', 'tig_festival_program_save');
+                    }
+                } catch (err) {
+                    alert('Érvénytelen JSON fájl.');
+                }
+            };
+            reader.readAsText(file);
+            importFile.value = '';
+        });
+    }
+
     });
 })();
