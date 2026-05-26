@@ -1,0 +1,1073 @@
+<?php
+/**
+ * Plugin Name: TIG Festival Program
+ * Description: Festival and family day program schedule shortcode.
+ * Version: 0.6.0
+ * Author: TIG
+ * Text Domain: tig-festival-program
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+define('TIG_FESTIVAL_PROGRAM_VERSION', '0.6.0');
+define('TIG_FESTIVAL_PROGRAM_PATH', plugin_dir_path(__FILE__));
+define('TIG_FESTIVAL_PROGRAM_URL', plugin_dir_url(__FILE__));
+define('TIG_FESTIVAL_PROGRAM_OPTION', 'tig_festival_program_schedule');
+define('TIG_FESTIVAL_PROGRAM_VENUES_OPTION', 'tig_festival_program_venues');
+define('TIG_FESTIVAL_PROGRAM_TAGS_OPTION', 'tig_festival_program_tags');
+
+function tig_festival_program_get_default_venues(): array
+{
+    return [
+        ['id' => 'main_stage',   'label' => 'FÅszÃ­npad',    'color' => '#2b72b8', 'text_color' => '#ffffff'],
+        ['id' => 'side_stage',   'label' => 'MellÃ©kszÃ­npad','color' => '#5f96cf', 'text_color' => '#ffffff'],
+        ['id' => 'workshop',     'label' => 'Workshop',     'color' => '#f2e799', 'text_color' => '#0f2133'],
+        ['id' => 'kids_zone',    'label' => 'GyerekzÃ³na',   'color' => '#ffd200', 'text_color' => '#0f2133'],
+        ['id' => 'food_court',   'label' => 'ÃtkezÃ©si tÃ©r', 'color' => '#c9d7e6', 'text_color' => '#0f2133'],
+    ];
+}
+function tig_festival_program_get_venues(): array
+{
+    $venues = get_option(TIG_FESTIVAL_PROGRAM_VENUES_OPTION);
+
+    if (!is_array($venues) || empty($venues)) {
+        $venues = tig_festival_program_get_default_venues();
+    }
+
+    $indexed = [];
+
+    foreach ($venues as $venue) {
+        if (!is_array($venue) || empty($venue['id']) || empty($venue['label'])) {
+            continue;
+        }
+
+        $id = sanitize_key($venue['id']);
+        $indexed[$id] = [
+            'id' => $id,
+            'label' => sanitize_text_field($venue['label']),
+            'color' => sanitize_hex_color($venue['color'] ?? '') ?: '#eef3f7',
+            'text_color' => sanitize_hex_color($venue['text_color'] ?? '') ?: '#0f2133',
+        ];
+    }
+
+    if (empty($indexed)) {
+        foreach (tig_festival_program_get_default_venues() as $venue) {
+            $indexed[$venue['id']] = $venue;
+        }
+    }
+
+    return $indexed;
+}
+
+function tig_festival_program_get_default_program_types(): array
+{
+    return [
+        ['id' => 'main',        'label' => 'FÅ program'],
+        ['id' => 'workshop',    'label' => 'Workshop'],
+        ['id' => 'continuous',  'label' => 'Folyamatos program'],
+    ];
+}
+function tig_festival_program_get_program_types(): array
+{
+    $types = get_option(TIG_FESTIVAL_PROGRAM_TAGS_OPTION, false);
+
+    if ($types === false) {
+        $types = tig_festival_program_get_default_program_types();
+    }
+
+    $indexed = [];
+
+    foreach ($types as $type) {
+        if (!is_array($type) || empty($type['id']) || empty($type['label'])) {
+            continue;
+        }
+
+        $id = sanitize_key($type['id']);
+        $indexed[$id] = [
+            'id' => $id,
+            'label' => sanitize_text_field($type['label']),
+        ];
+    }
+
+    return $indexed;
+}
+
+function tig_festival_program_get_default_schedule(): array
+{
+    return [
+        ['time' => '09:00', 'note' => 'KapunyitÃ¡s', 'events' => []],
+        ['time' => '09:30', 'note' => '', 'events' => [
+            ['venue' => 'kids_zone',  'title' => 'Gyermekprogramok kezdete', 'type' => 'continuous'],
+            ['venue' => 'food_court', 'title' => 'Reggeli bÃ¼fÃ© nyitÃ¡s',      'type' => 'continuous'],
+        ]],
+        ['time' => '10:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'MegnyitÃ³ Ã¼nnepsÃ©g',        'type' => 'main'],
+            ['venue' => 'workshop',   'title' => 'Workshop A â BemutatkozÃ¡s','type' => 'workshop'],
+        ]],
+        ['time' => '11:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'VendÃ©gelÅadÃ³ I.',           'type' => 'main'],
+            ['venue' => 'side_stage', 'title' => 'Akusztikus koncert',        'type' => 'main'],
+            ['venue' => 'workshop',   'title' => 'Workshop B â CsapatjÃ¡tÃ©k', 'type' => 'workshop'],
+        ]],
+        ['time' => '12:30', 'note' => 'EbÃ©dszÃ¼net', 'events' => [
+            ['venue' => 'food_court', 'title' => 'EbÃ©d', 'type' => 'continuous'],
+        ]],
+        ['time' => '14:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'FÅ program â Csapatverseny',  'type' => 'main'],
+            ['venue' => 'side_stage', 'title' => 'InteraktÃ­v bemutatÃ³',         'type' => 'main'],
+            ['venue' => 'kids_zone',  'title' => 'KÃ©zmÅ±ves foglalkozÃ¡s',        'type' => 'workshop'],
+        ]],
+        ['time' => '16:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'DÃ­jÃ¡tadÃ³ ceremÃ³nia',          'type' => 'main'],
+        ]],
+        ['time' => '17:00', 'note' => '', 'events' => [
+            ['venue' => 'main_stage', 'title' => 'ZÃ¡rÃ³ koncert',                'type' => 'main'],
+            ['venue' => 'food_court', 'title' => 'Esti bÃ¼fÃ©',                   'type' => 'continuous'],
+        ]],
+        ['time' => '19:00', 'note' => 'RendezvÃ©ny vÃ©ge', 'events' => []],
+    ];
+}
+function tig_festival_program_get_schedule(): array
+{
+    $schedule = get_option(TIG_FESTIVAL_PROGRAM_OPTION);
+
+    if (!is_array($schedule) || empty($schedule)) {
+        return tig_festival_program_get_default_schedule();
+    }
+
+    return $schedule;
+}
+
+function tig_festival_program_time_to_minutes(string $time): ?int
+{
+    if (!preg_match('/^([01]\d|2[0-3]):([0-5]\d)$/', $time, $matches)) {
+        return null;
+    }
+
+    return ((int) $matches[1] * 60) + (int) $matches[2];
+}
+
+function tig_festival_program_sanitize_venues(array $raw_venues): array
+{
+    $venues = [];
+
+    foreach ($raw_venues as $raw_venue) {
+        if (!is_array($raw_venue)) {
+            continue;
+        }
+
+        $label = isset($raw_venue['label']) ? sanitize_text_field(wp_unslash($raw_venue['label'])) : '';
+
+        if ($label === '') {
+            continue;
+        }
+
+        $id = isset($raw_venue['id']) ? sanitize_key(wp_unslash($raw_venue['id'])) : '';
+        $id = $id !== '' ? $id : sanitize_title($label);
+        $id = $id !== '' ? $id : 'venue-' . wp_generate_password(6, false, false);
+
+        $original_id = $id;
+        $suffix = 2;
+
+        while (isset($venues[$id])) {
+            $id = $original_id . '-' . $suffix;
+            $suffix++;
+        }
+
+        $venues[$id] = [
+            'id' => $id,
+            'label' => $label,
+            'color' => sanitize_hex_color($raw_venue['color'] ?? '') ?: '#eef3f7',
+            'text_color' => sanitize_hex_color($raw_venue['text_color'] ?? '') ?: '#0f2133',
+        ];
+    }
+
+    return array_values($venues);
+}
+
+function tig_festival_program_sanitize_program_types(array $raw_types): array
+{
+    $types = [];
+
+    foreach ($raw_types as $raw_type) {
+        if (!is_array($raw_type)) {
+            continue;
+        }
+
+        $label = isset($raw_type['label']) ? sanitize_text_field(wp_unslash($raw_type['label'])) : '';
+
+        if ($label === '') {
+            continue;
+        }
+
+        $id = isset($raw_type['id']) ? sanitize_key(wp_unslash($raw_type['id'])) : '';
+        $id = $id !== '' ? $id : sanitize_title($label);
+        $id = $id !== '' ? $id : 'tag-' . wp_generate_password(6, false, false);
+
+        $original_id = $id;
+        $suffix = 2;
+
+        while (isset($types[$id])) {
+            $id = $original_id . '-' . $suffix;
+            $suffix++;
+        }
+
+        $types[$id] = [
+            'id' => $id,
+            'label' => $label,
+        ];
+    }
+
+    return array_values($types);
+}
+
+function tig_festival_program_sanitize_schedule(array $raw_schedule, array $venues, array $types): array
+{
+    $allowed_venues = array_keys($venues);
+    $allowed_types = array_keys($types);
+    $schedule = [];
+
+    foreach ($raw_schedule as $raw_row) {
+        if (!is_array($raw_row)) {
+            continue;
+        }
+
+        $time = isset($raw_row['time']) ? sanitize_text_field(wp_unslash($raw_row['time'])) : '';
+        $note = isset($raw_row['note']) ? sanitize_text_field(wp_unslash($raw_row['note'])) : '';
+
+        if ($time === '' && $note === '' && empty($raw_row['events'])) {
+            continue;
+        }
+
+        $events = [];
+
+        if (!empty($raw_row['events']) && is_array($raw_row['events'])) {
+            foreach ($raw_row['events'] as $raw_event) {
+                if (!is_array($raw_event)) {
+                    continue;
+                }
+
+                $venue = isset($raw_event['venue']) ? sanitize_key(wp_unslash($raw_event['venue'])) : '';
+                $title = isset($raw_event['title']) ? sanitize_text_field(wp_unslash($raw_event['title'])) : '';
+                $type = isset($raw_event['type']) ? sanitize_key(wp_unslash($raw_event['type'])) : '';
+                $end_time = isset($raw_event['end_time']) ? sanitize_text_field(wp_unslash($raw_event['end_time'])) : '';
+
+                if ($title === '' || !in_array($venue, $allowed_venues, true)) {
+                    continue;
+                }
+
+                if ($type !== '' && !in_array($type, $allowed_types, true)) {
+                    $type = '';
+                }
+
+                $start_minutes = tig_festival_program_time_to_minutes($time);
+                $end_minutes = tig_festival_program_time_to_minutes($end_time);
+
+                if ($start_minutes === null || $end_minutes === null || $end_minutes <= $start_minutes) {
+                    $end_time = '';
+                }
+
+                $events[] = [
+                    'venue' => $venue,
+                    'title' => $title,
+                    'type' => $type,
+                    'end_time' => $end_time,
+                ];
+            }
+        }
+
+        $schedule[] = [
+            'time' => $time,
+            'note' => $note,
+            'events' => $events,
+        ];
+    }
+
+    usort($schedule, static function (array $a, array $b): int {
+        return strcmp($a['time'], $b['time']);
+    });
+
+    return $schedule;
+}
+
+function tig_festival_program_enqueue_assets(): void
+{
+    wp_enqueue_style(
+        'tig-festival-program',
+        TIG_FESTIVAL_PROGRAM_URL . 'assets/css/tig-festival-program.css',
+        [],
+        TIG_FESTIVAL_PROGRAM_VERSION
+    );
+
+    wp_enqueue_script(
+        'tig-festival-program',
+        TIG_FESTIVAL_PROGRAM_URL . 'assets/js/tig-festival-program.js',
+        [],
+        TIG_FESTIVAL_PROGRAM_VERSION,
+        true
+    );
+}
+
+function tig_festival_program_shortcode(array $atts = []): string
+{
+    $atts = shortcode_atts([
+        'title'    => '',
+        'subtitle' => '',
+    ], $atts, 'dg_program');
+
+    tig_festival_program_enqueue_assets();
+
+    $template_candidates = [
+        TIG_FESTIVAL_PROGRAM_PATH . 'templates/program.php',
+        __DIR__ . '/templates/program.php',
+        dirname(__FILE__) . '/templates/program.php',
+    ];
+
+    $template = '';
+
+    foreach ($template_candidates as $template_candidate) {
+        if (file_exists($template_candidate)) {
+            $template = $template_candidate;
+            break;
+        }
+    }
+
+    if ($template === '') {
+        return tig_festival_program_render_program_inline((string) $atts['title'], (string) $atts['subtitle']);
+    }
+
+    ob_start();
+        // Shortcode attribÃºtumok Ã¡tadÃ¡sa a template-nek
+include $template;
+    $html = trim((string) ob_get_clean());
+
+    if ($html === '' && current_user_can('manage_options')) {
+        return '<div class="tig-program tig-program-error">DG Program: a shortcode lefutott, de nem kÃ©szÃ¼lt megjelenÃ­thetÅ HTML.</div>';
+    }
+
+    return $html;
+}
+
+add_shortcode('dg_program', 'tig_festival_program_shortcode');
+add_shortcode('tig_festival_program', 'tig_festival_program_shortcode');
+add_shortcode('festival_program', 'tig_festival_program_shortcode');
+
+function tig_festival_program_render_program_inline(string $title = '', string $subtitle = ''): string
+{
+    $venues = tig_festival_program_get_venues();
+    $schedule = tig_festival_program_get_schedule();
+    $program_types = tig_festival_program_get_program_types();
+    $schedule_times = array_map(static function (array $row): string {
+        return (string) ($row['time'] ?? '');
+    }, $schedule);
+
+    $get_event_rowspan = static function (array $event, int $row_index) use ($schedule_times): int {
+        $start_time = $schedule_times[$row_index] ?? '';
+        $end_time = (string) ($event['end_time'] ?? '');
+        $start_minutes = tig_festival_program_time_to_minutes($start_time);
+        $end_minutes = tig_festival_program_time_to_minutes($end_time);
+
+        if ($start_minutes === null || $end_minutes === null || $end_minutes <= $start_minutes) {
+            return 1;
+        }
+
+        $span = 1;
+        $row_count = count($schedule_times);
+
+        for ($next_index = $row_index + 1; $next_index < $row_count; $next_index++) {
+            $next_minutes = tig_festival_program_time_to_minutes($schedule_times[$next_index]);
+
+            if ($next_minutes === null || $next_minutes >= $end_minutes) {
+                break;
+            }
+
+            $span++;
+        }
+
+        return $span;
+    };
+
+    ob_start();
+    ?>
+    <div class="tig-program">
+      <div class="tig-program-head">
+        <div class="tig-program-title"><?php echo esc_html($title); ?></div>
+        <div class="tig-program-subtitle"><?php echo esc_html($subtitle); ?></div>
+      </div>
+
+      <div class="tig-program-legend">
+        <?php foreach ($venues as $venue) : ?>
+          <div
+            class="tig-legend-item tig-venue-chip tig-has-venue-tooltip"
+            style="--tig-venue-bg: <?php echo esc_attr($venue['color']); ?>; --tig-venue-fg: <?php echo esc_attr($venue['text_color']); ?>;"
+            data-venue-tooltip="<?php echo esc_attr($venue['label']); ?>"
+            tabindex="0"
+          >
+            <?php echo esc_html($venue['label']); ?>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <?php if (!empty($program_types)) : ?>
+        <div class="tig-program-type-legend">
+          <?php foreach ($program_types as $type_key => $type) : ?>
+            <span class="tig-program-type tig-program-type-<?php echo esc_attr($type_key); ?>">
+              <?php echo esc_html($type['label']); ?>
+            </span>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <div class="tig-desktop-view">
+        <div class="tig-program-table-wrap">
+          <table class="tig-program-table tig-program-table-dynamic">
+            <thead>
+              <tr>
+                <th class="tig-program-time-head">IdÅpont</th>
+                <?php foreach ($venues as $venue) : ?>
+                  <th><?php echo esc_html($venue['label']); ?></th>
+                <?php endforeach; ?>
+              </tr>
+            </thead>
+            <tbody>
+              <?php $rowspan_blocks = []; ?>
+              <?php foreach ($schedule as $row_index => $row) : ?>
+                <?php
+                $events_by_venue = [];
+
+                foreach (($row['events'] ?? []) as $event) {
+                    if (empty($event['venue']) || empty($venues[$event['venue']])) {
+                        continue;
+                    }
+
+                    $events_by_venue[$event['venue']][] = $event;
+                }
+                ?>
+                <tr>
+                  <td class="time">
+                    <?php echo esc_html($row['time'] ?? ''); ?>
+                    <?php if (!empty($row['note'])) : ?>
+                      <span class="tig-time-note"><?php echo esc_html($row['note']); ?></span>
+                    <?php endif; ?>
+                  </td>
+
+                  <?php foreach ($venues as $venue_key => $venue) : ?>
+                    <?php if (!empty($rowspan_blocks[$venue_key])) : ?>
+                      <?php $rowspan_blocks[$venue_key]--; ?>
+                      <?php continue; ?>
+                    <?php endif; ?>
+                    <?php $venue_events = $events_by_venue[$venue_key] ?? []; ?>
+                    <?php
+                    $rowspan = 1;
+
+                    foreach ($venue_events as $event) {
+                        $rowspan = max($rowspan, $get_event_rowspan($event, (int) $row_index));
+                    }
+
+                    if ($rowspan > 1) {
+                        $rowspan_blocks[$venue_key] = $rowspan - 1;
+                    }
+                    ?>
+                    <td
+                      class="<?php echo esc_attr(!empty($venue_events) ? 'tig-venue-cell tig-has-venue-tooltip' : 'muted empty'); ?>"
+                      <?php if ($rowspan > 1) : ?>
+                        rowspan="<?php echo esc_attr((string) $rowspan); ?>"
+                      <?php endif; ?>
+                      <?php if (!empty($venue_events)) : ?>
+                        style="--tig-venue-bg: <?php echo esc_attr($venue['color']); ?>; --tig-venue-fg: <?php echo esc_attr($venue['text_color']); ?>;"
+                        data-venue-tooltip="<?php echo esc_attr($venue['label']); ?>"
+                        tabindex="0"
+                      <?php endif; ?>
+                    >
+                      <?php foreach ($venue_events as $event) : ?>
+                        <?php $type = $event['type'] ?? ''; ?>
+                        <div class="tig-program-event">
+                          <span class="tig-program-event-title"><?php echo esc_html($event['title']); ?></span>
+                          <?php if (!empty($event['end_time'])) : ?>
+                            <span class="tig-program-time-range"><?php echo esc_html(($row['time'] ?? '') . 'â' . $event['end_time']); ?></span>
+                          <?php endif; ?>
+                          <?php if ($type !== '' && !empty($program_types[$type])) : ?>
+                            <span class="tig-program-type tig-program-type-<?php echo esc_attr($type); ?>">
+                              <?php echo esc_html($program_types[$type]['label']); ?>
+                            </span>
+                          <?php endif; ?>
+                        </div>
+                      <?php endforeach; ?>
+                    </td>
+                  <?php endforeach; ?>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tig-mobile-view">
+        <?php foreach ($schedule as $row) : ?>
+          <?php
+          $events_by_venue = [];
+
+          foreach (($row['events'] ?? []) as $event) {
+              if (empty($event['venue']) || empty($venues[$event['venue']])) {
+                  continue;
+              }
+
+              $events_by_venue[$event['venue']][] = $event;
+          }
+          ?>
+          <div class="tig-mobile-card" data-time="<?php echo esc_attr($row['time'] ?? ''); ?>">
+            <div class="tig-mobile-time">
+              <?php echo esc_html($row['time'] ?? ''); ?>
+              <?php if (!empty($row['note'])) : ?>
+                <span class="tig-mobile-time-note"><?php echo esc_html($row['note']); ?></span>
+              <?php endif; ?>
+            </div>
+
+            <?php foreach ($venues as $venue_key => $venue) : ?>
+              <?php if (empty($events_by_venue[$venue_key])) : ?>
+                <?php continue; ?>
+              <?php endif; ?>
+
+              <div class="tig-mobile-section">
+                <div class="tig-mobile-label"><?php echo esc_html($venue['label']); ?></div>
+                <div class="tig-tag-row">
+                  <?php foreach ($events_by_venue[$venue_key] as $event) : ?>
+                    <?php $type = $event['type'] ?? ''; ?>
+                    <div
+                      class="tig-tag tig-venue-chip"
+                      style="--tig-venue-bg: <?php echo esc_attr($venue['color']); ?>; --tig-venue-fg: <?php echo esc_attr($venue['text_color']); ?>;"
+                    >
+                      <span class="tig-program-event-title"><?php echo esc_html($event['title']); ?></span>
+                      <?php if (!empty($event['end_time'])) : ?>
+                        <span class="tig-program-time-range"><?php echo esc_html(($row['time'] ?? '') . 'â' . $event['end_time']); ?></span>
+                      <?php endif; ?>
+                      <?php if ($type !== '' && !empty($program_types[$type])) : ?>
+                        <span class="tig-program-type tig-program-type-<?php echo esc_attr($type); ?>">
+                          <?php echo esc_html($program_types[$type]['label']); ?>
+                        </span>
+                      <?php endif; ?>
+                    </div>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+    <?php
+    return trim((string) ob_get_clean());
+}
+
+function tig_festival_program_admin_menu(): void
+{
+    add_menu_page(
+        'DG Program',
+        'DG Program',
+        'edit_posts',
+        'tig-festival-program',
+        'tig_festival_program_render_admin_page',
+        'dashicons-calendar-alt',
+        26
+    );
+}
+
+add_action('admin_menu', 'tig_festival_program_admin_menu');
+
+function tig_festival_program_handle_admin_save(): void
+{
+    if (!current_user_can('edit_posts')) {
+        wp_die(esc_html__('Nincs jogosultsÃ¡god a program szerkesztÃ©sÃ©hez.', 'tig-festival-program'));
+    }
+
+    check_admin_referer('tig_festival_program_save', 'tig_festival_program_nonce');
+
+    $raw_venues = isset($_POST['dg_venues']) && is_array($_POST['dg_venues']) ? $_POST['dg_venues'] : [];
+    $sanitized_venues = tig_festival_program_sanitize_venues($raw_venues);
+
+    if (empty($sanitized_venues)) {
+        $sanitized_venues = tig_festival_program_get_default_venues();
+    }
+
+    update_option(TIG_FESTIVAL_PROGRAM_VENUES_OPTION, $sanitized_venues, false);
+
+    $raw_types = isset($_POST['dg_program_types']) && is_array($_POST['dg_program_types']) ? $_POST['dg_program_types'] : [];
+    $sanitized_types = tig_festival_program_sanitize_program_types($raw_types);
+
+    update_option(TIG_FESTIVAL_PROGRAM_TAGS_OPTION, $sanitized_types, false);
+
+    $venues = [];
+
+    foreach ($sanitized_venues as $venue) {
+        $venues[$venue['id']] = $venue;
+    }
+
+    $types = [];
+
+    foreach ($sanitized_types as $type) {
+        $types[$type['id']] = $type;
+    }
+
+    $raw_schedule = isset($_POST['dg_schedule']) && is_array($_POST['dg_schedule']) ? $_POST['dg_schedule'] : [];
+    update_option(TIG_FESTIVAL_PROGRAM_OPTION, tig_festival_program_sanitize_schedule($raw_schedule, $venues, $types), false);
+
+    wp_safe_redirect(add_query_arg([
+        'page' => 'tig-festival-program',
+        'updated' => '1',
+    ], admin_url('admin.php')));
+    exit;
+}
+
+add_action('admin_post_tig_festival_program_save', 'tig_festival_program_handle_admin_save');
+add_action('admin_post_tig_festival_program_reset', 'tig_festival_program_handle_admin_reset');
+
+
+function tig_festival_program_handle_admin_reset(): void
+{
+    if (!current_user_can('manage_options')) {
+        wp_die(esc_html__('Nincs jogosultsÃ¡god ehhez a mÅ±velethez.', 'tig-festival-program'));
+    }
+
+    check_admin_referer('tig_festival_program_reset', 'tig_festival_program_reset_nonce');
+
+    delete_option(TIG_FESTIVAL_PROGRAM_OPTION);
+    delete_option(TIG_FESTIVAL_PROGRAM_VENUES_OPTION);
+    delete_option(TIG_FESTIVAL_PROGRAM_TAGS_OPTION);
+
+    wp_safe_redirect(add_query_arg([
+        'page'    => 'tig-program',
+        'updated' => '1',
+        'reset'   => '1',
+    ], admin_url('admin.php')));
+    exit;
+}
+function tig_festival_program_render_admin_page(): void
+{
+    if (!current_user_can('edit_posts')) {
+        wp_die(esc_html__('Nincs jogosultsÃ¡god a program szerkesztÃ©sÃ©hez.', 'tig-festival-program'));
+    }
+
+    $venues = tig_festival_program_get_venues();
+    $schedule = tig_festival_program_get_schedule();
+    $types = tig_festival_program_get_program_types();
+    ?>
+    <div class="wrap tig-admin-wrap">
+        <h1>DG Program szerkesztÅ</h1>
+
+        <?php if (isset($_GET['reset']) && $_GET['reset'] === '1') : ?>
+                <div class="notice notice-warning is-dismissible">
+                    <p>Ãsszes adat tÃ¶rÃ¶lve. Az alapÃ©rtelmezett adatok visszaÃ¡llnak elsÅ betÃ¶ltÃ©skor.</p>
+                </div>
+                <?php endif; ?>
+                <?php if (isset($_GET['updated']) && $_GET['updated'] === '1' && !isset($_GET['reset'])) : ?>
+            <div class="notice notice-success is-dismissible">
+                <p>Program mentve.</p>
+            </div>
+        <?php endif; ?>
+                <?php endif; ?>
+
+        <p>Az elsÅ oszlop az idÅpont, utÃ¡na a lent megadott helyszÃ­nek jelennek meg oszlopkÃ©nt. A tag-ek opcionÃ¡lisak, bÅvÃ­thetÅk Ã©s Ã¡tÃ­rhatÃ³k. TÃ¶bb idÅsÃ¡von Ã¡t tartÃ³ programnÃ¡l add meg a vÃ©ge idÅpontot.</p>
+
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+            <input type="hidden" name="action" value="tig_festival_program_save">
+            <?php wp_nonce_field('tig_festival_program_save', 'tig_festival_program_nonce'); ?>
+
+            <div class="tig-admin-toolbar">
+                <button type="button" class="button button-secondary" data-tig-add-venue>Ãj helyszÃ­n</button>
+                <button type="button" class="button button-secondary" data-tig-add-type>Ãj tag</button>
+                <button type="button" class="button button-secondary" data-tig-add-row>Ãj idÅpont</button>
+                <button type="submit" class="button button-primary">Program mentÃ©se</button>
+            
+
+                <?php wp_nonce_field('tig_festival_program_reset', 'tig_festival_program_reset_nonce'); ?>
+                <button
+                    type="button"
+                    class="button button-link-delete tig-admin-reset-btn"
+                    data-confirm="<?php echo esc_attr('Biztosan tÃ¶rlÃ¶d az Ã¶sszes helyszÃ­nt, programot Ã©s beÃ¡llÃ­tÃ¡st? Ez a mÅ±velet nem vonhatÃ³ vissza.'); ?>"
+                    data-action="<?php echo esc_url(admin_url('admin-post.php')); ?>"
+                    data-nonce-name="tig_festival_program_reset_nonce"
+                    data-form-action="tig_festival_program_reset"
+                >Ãsszes adat tÃ¶rlÃ©se</button></div>
+
+            <section class="tig-admin-panel">
+                <h2>HelyszÃ­nek</h2>
+                <div class="tig-admin-venues" data-tig-venues>
+                    <?php foreach ($venues as $venue_index => $venue) : ?>
+                        <?php tig_festival_program_render_admin_venue((string) $venue_index, $venue); ?>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+
+            <section class="tig-admin-panel">
+                <h2>Tag-ek</h2>
+                <div class="tig-admin-types" data-tig-types>
+                    <?php foreach ($types as $type_index => $type) : ?>
+                        <?php tig_festival_program_render_admin_type((string) $type_index, $type); ?>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+
+            <section class="tig-admin-panel">
+                <h2>IdÅpontok Ã©s programok</h2>
+                <div class="tig-admin-schedule" data-tig-schedule>
+                    <?php foreach ($schedule as $row_index => $row) : ?>
+                        <?php tig_festival_program_render_admin_row((int) $row_index, $row, $venues, $types); ?>
+                    <?php endforeach; ?>
+                </div>
+            </section>
+
+            <div class="tig-admin-toolbar tig-admin-toolbar-bottom">
+                <button type="button" class="button button-secondary" data-tig-add-venue>Ãj helyszÃ­n</button>
+                <button type="button" class="button button-secondary" data-tig-add-type>Ãj tag</button>
+                <button type="button" class="button button-secondary" data-tig-add-row>Ãj idÅpont</button>
+                <button type="submit" class="button button-primary">Program mentÃ©se</button>
+            </div>
+        </form>
+    </div>
+
+    <template id="tig-program-venue-template">
+        <?php tig_festival_program_render_admin_venue('__venue_index__', ['id' => '', 'label' => '', 'color' => '#eef3f7', 'text_color' => '#0f2133']); ?>
+    </template>
+
+    <template id="tig-program-type-template">
+        <?php tig_festival_program_render_admin_type('__type_index__', ['id' => '', 'label' => '']); ?>
+    </template>
+
+    <template id="tig-program-row-template">
+        <?php tig_festival_program_render_admin_row('__row_index__', ['time' => '', 'note' => '', 'events' => []], $venues, $types); ?>
+    </template>
+
+    <template id="tig-program-event-template">
+        <?php tig_festival_program_render_admin_event('__row_index__', '__event_index__', ['venue' => array_key_first($venues), 'title' => '', 'type' => '', 'end_time' => ''], $venues, $types); ?>
+    </template>
+
+    <style>
+        .tig-admin-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin: 18px 0;
+        }
+
+        .tig-admin-toolbar-bottom {
+            margin-top: 20px;
+        }
+
+        .tig-admin-panel {
+            max-width: 1180px;
+            margin: 0 0 18px;
+            padding: 16px;
+            border: 1px solid #dcdcde;
+            background: #fff;
+        }
+
+        .tig-admin-panel h2 {
+            margin-top: 0;
+        }
+
+        .tig-admin-venue,
+        .tig-admin-type,
+        .tig-admin-event {
+            display: grid;
+            grid-template-columns: minmax(180px, 1fr) 120px 120px auto;
+            gap: 10px;
+            align-items: end;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #dcdcde;
+            background: #fbfbfb;
+        }
+
+        .tig-admin-row {
+            margin: 0 0 16px;
+            border: 1px solid #dcdcde;
+            background: #fff;
+        }
+
+        .tig-admin-row-head {
+            display: grid;
+            grid-template-columns: 150px minmax(180px, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+            padding: 14px;
+            border-bottom: 1px solid #dcdcde;
+            background: #f6f7f7;
+        }
+
+        .tig-admin-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .tig-admin-field input[type="text"],
+        .tig-admin-field input[type="time"],
+        .tig-admin-field select {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .tig-admin-events {
+            padding: 14px;
+        }
+
+        .tig-admin-event {
+            grid-template-columns: 170px minmax(220px, 1fr) 220px 150px auto;
+        }
+
+        .tig-admin-actions,
+        .tig-admin-event-actions,
+        .tig-admin-row-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 900px) {
+            .tig-admin-venue,
+            .tig-admin-type,
+            .tig-admin-row-head,
+            .tig-admin-event {
+                grid-template-columns: 1fr;
+            }
+
+            .tig-admin-actions,
+            .tig-admin-row-actions,
+            .tig-admin-event-actions {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+
+    <script>
+        (function () {
+            const venues = document.querySelector("[data-tig-venues]");
+            const types = document.querySelector("[data-tig-types]");
+            const schedule = document.querySelector("[data-tig-schedule]");
+            const venueTemplate = document.getElementById("tig-program-venue-template");
+            const typeTemplate = document.getElementById("tig-program-type-template");
+            const rowTemplate = document.getElementById("tig-program-row-template");
+            const eventTemplate = document.getElementById("tig-program-event-template");
+
+            if (!venues || !types || !schedule || !venueTemplate || !typeTemplate || !rowTemplate || !eventTemplate) {
+                return;
+            }
+
+            function nextIndex() {
+                return Date.now().toString() + Math.floor(Math.random() * 1000).toString();
+            }
+
+            function bindVenue(venue) {
+                venue.querySelectorAll("[data-tig-remove-venue]").forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        venue.remove();
+                    });
+                });
+            }
+
+            function bindType(type) {
+                type.querySelectorAll("[data-tig-remove-type]").forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        type.remove();
+                    });
+                });
+            }
+
+            function bindRow(row) {
+                row.querySelectorAll("[data-tig-add-event]").forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        const rowIndex = row.getAttribute("data-row-index");
+                        const html = eventTemplate.innerHTML
+                            .replaceAll("__row_index__", rowIndex)
+                            .replaceAll("__event_index__", nextIndex());
+
+                        row.querySelector("[data-tig-events]").insertAdjacentHTML("beforeend", html);
+                        bindEvent(row.querySelector("[data-tig-events] [data-tig-event]:last-child"));
+                    });
+                });
+
+                row.querySelectorAll("[data-tig-remove-row]").forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        row.remove();
+                    });
+                });
+
+                row.querySelectorAll("[data-tig-event]").forEach(bindEvent);
+            }
+
+            function bindEvent(event) {
+                event.querySelectorAll("[data-tig-remove-event]").forEach(function (button) {
+                    button.addEventListener("click", function () {
+                        event.remove();
+                    });
+                });
+            }
+
+            document.querySelectorAll("[data-tig-add-venue]").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const html = venueTemplate.innerHTML.replaceAll("__venue_index__", nextIndex());
+                    venues.insertAdjacentHTML("beforeend", html);
+                    bindVenue(venues.querySelector("[data-tig-venue]:last-child"));
+                });
+            });
+
+            document.querySelectorAll("[data-tig-add-type]").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const html = typeTemplate.innerHTML.replaceAll("__type_index__", nextIndex());
+                    types.insertAdjacentHTML("beforeend", html);
+                    bindType(types.querySelector("[data-tig-type]:last-child"));
+                });
+            });
+
+            document.querySelectorAll("[data-tig-add-row]").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const rowIndex = nextIndex();
+                    const html = rowTemplate.innerHTML.replaceAll("__row_index__", rowIndex);
+                    schedule.insertAdjacentHTML("beforeend", html);
+                    bindRow(schedule.querySelector("[data-tig-row]:last-child"));
+                });
+            });
+
+            venues.querySelectorAll("[data-tig-venue]").forEach(bindVenue);
+            types.querySelectorAll("[data-tig-type]").forEach(bindType);
+            schedule.querySelectorAll("[data-tig-row]").forEach(bindRow);
+        })();
+    
+
+            // Reset gomb kezelÅ
+            (function () {
+                var resetBtn = document.querySelector('.tig-admin-reset-btn');
+                if (!resetBtn) return;
+                resetBtn.addEventListener('click', function () {
+                    if (!window.confirm(resetBtn.getAttribute('data-confirm'))) return;
+                    var form = document.createElement('form');
+                    form.method = 'post';
+                    form.action = resetBtn.getAttribute('data-action');
+                    var actionInput = document.createElement('input');
+                    actionInput.type = 'hidden';
+                    actionInput.name = 'action';
+                    actionInput.value = resetBtn.getAttribute('data-form-action');
+                    form.appendChild(actionInput);
+                    var nonceInput = document.querySelector('input[name="' + resetBtn.getAttribute('data-nonce-name') + '"]');
+                    if (nonceInput) form.appendChild(nonceInput.cloneNode());
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            })();</script>
+    <?php
+}
+
+function tig_festival_program_render_admin_venue($venue_index, array $venue): void
+{
+    ?>
+    <div class="tig-admin-venue" data-tig-venue>
+        <input type="hidden" name="dg_venues[<?php echo esc_attr((string) $venue_index); ?>][id]" value="<?php echo esc_attr($venue['id'] ?? ''); ?>">
+        <div class="tig-admin-field">
+            <label>HelyszÃ­n neve</label>
+            <input type="text" name="dg_venues[<?php echo esc_attr((string) $venue_index); ?>][label]" value="<?php echo esc_attr($venue['label'] ?? ''); ?>" placeholder="Pl. NagyszÃ­npad">
+        </div>
+        <div class="tig-admin-field">
+            <label>HÃ¡ttÃ©rszÃ­n</label>
+            <input type="color" name="dg_venues[<?php echo esc_attr((string) $venue_index); ?>][color]" value="<?php echo esc_attr($venue['color'] ?? '#eef3f7'); ?>">
+        </div>
+        <div class="tig-admin-field">
+            <label>SzÃ¶vegszÃ­n</label>
+            <input type="color" name="dg_venues[<?php echo esc_attr((string) $venue_index); ?>][text_color]" value="<?php echo esc_attr($venue['text_color'] ?? '#0f2133'); ?>">
+        </div>
+        <div class="tig-admin-actions">
+            <button type="button" class="button button-link-delete" data-tig-remove-venue>HelyszÃ­n tÃ¶rlÃ©se</button>
+        </div>
+    </div>
+    <?php
+}
+
+function tig_festival_program_render_admin_type($type_index, array $type): void
+{
+    ?>
+    <div class="tig-admin-type" data-tig-type>
+        <input type="hidden" name="dg_program_types[<?php echo esc_attr((string) $type_index); ?>][id]" value="<?php echo esc_attr($type['id'] ?? ''); ?>">
+        <div class="tig-admin-field">
+            <label>Tag neve</label>
+            <input type="text" name="dg_program_types[<?php echo esc_attr((string) $type_index); ?>][label]" value="<?php echo esc_attr($type['label'] ?? ''); ?>" placeholder="Pl. FÅ program">
+        </div>
+        <div></div>
+        <div></div>
+        <div class="tig-admin-actions">
+            <button type="button" class="button button-link-delete" data-tig-remove-type>Tag tÃ¶rlÃ©se</button>
+        </div>
+    </div>
+    <?php
+}
+
+function tig_festival_program_render_admin_row($row_index, array $row, array $venues, array $types): void
+{
+    $events = isset($row['events']) && is_array($row['events']) ? $row['events'] : [];
+    ?>
+    <section class="tig-admin-row" data-tig-row data-row-index="<?php echo esc_attr((string) $row_index); ?>">
+        <div class="tig-admin-row-head">
+            <div class="tig-admin-field">
+                <label>IdÅpont</label>
+                <input type="time" name="dg_schedule[<?php echo esc_attr((string) $row_index); ?>][time]" value="<?php echo esc_attr($row['time'] ?? ''); ?>">
+            </div>
+            <div class="tig-admin-field">
+                <label>IdÅpont megjegyzÃ©s</label>
+                <input type="text" name="dg_schedule[<?php echo esc_attr((string) $row_index); ?>][note]" value="<?php echo esc_attr($row['note'] ?? ''); ?>" placeholder="Pl. KapunyitÃ¡s">
+            </div>
+            <div class="tig-admin-row-actions">
+                <button type="button" class="button" data-tig-add-event>Program hozzÃ¡adÃ¡sa</button>
+                <button type="button" class="button button-link-delete" data-tig-remove-row>IdÅpont tÃ¶rlÃ©se</button>
+            </div>
+        </div>
+        <div class="tig-admin-events" data-tig-events>
+            <?php foreach ($events as $event_index => $event) : ?>
+                <?php tig_festival_program_render_admin_event($row_index, (int) $event_index, $event, $venues, $types); ?>
+            <?php endforeach; ?>
+        </div>
+    </section>
+    <?php
+}
+
+function tig_festival_program_render_admin_event($row_index, $event_index, array $event, array $venues, array $types): void
+{
+    $venue = $event['venue'] ?? array_key_first($venues);
+    $type = $event['type'] ?? '';
+    ?>
+    <div class="tig-admin-event" data-tig-event>
+        <div class="tig-admin-field">
+            <label>HelyszÃ­n</label>
+            <select name="dg_schedule[<?php echo esc_attr((string) $row_index); ?>][events][<?php echo esc_attr((string) $event_index); ?>][venue]">
+                <?php foreach ($venues as $venue_key => $venue_data) : ?>
+                    <option value="<?php echo esc_attr($venue_key); ?>" <?php selected($venue, $venue_key); ?>>
+                        <?php echo esc_html($venue_data['label']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="tig-admin-field">
+            <label>Program cÃ­me</label>
+            <input type="text" name="dg_schedule[<?php echo esc_attr((string) $row_index); ?>][events][<?php echo esc_attr((string) $event_index); ?>][title]" value="<?php echo esc_attr($event['title'] ?? ''); ?>">
+        </div>
+        <div class="tig-admin-field">
+            <label>Tag</label>
+            <select name="dg_schedule[<?php echo esc_attr((string) $row_index); ?>][events][<?php echo esc_attr((string) $event_index); ?>][type]">
+                <option value="" <?php selected($type, ''); ?>>Nincs tag</option>
+                <?php foreach ($types as $type_key => $type_label) : ?>
+                    <option value="<?php echo esc_attr($type_key); ?>" <?php selected($type, $type_key); ?>>
+                        <?php echo esc_html($type_label['label']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="tig-admin-field">
+            <label>VÃ©ge (opcionÃ¡lis)</label>
+            <input type="time" name="dg_schedule[<?php echo esc_attr((string) $row_index); ?>][events][<?php echo esc_attr((string) $event_index); ?>][end_time]" value="<?php echo esc_attr($event['end_time'] ?? ''); ?>">
+        </div>
+        <div class="tig-admin-event-actions">
+            <button type="button" class="button button-link-delete" data-tig-remove-event>Program tÃ¶rlÃ©se</button>
+        </div>
+    </div>
+    <?php
+}
