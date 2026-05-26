@@ -519,3 +519,28 @@
     text-align: center;
   }
 }
+
+
+/* Tooltip */
+#dg-venue-tooltip {
+    position: absolute;
+    z-index: 9999;
+    pointer-events: none;
+    background: #102b46;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    padding: 5px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    box-shadow: 0 2px 8px rgba(16, 43, 70, 0.25);
+}
+
+#dg-venue-tooltip.dg-tooltip-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
