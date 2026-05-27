@@ -1,0 +1,44 @@
+name: Build WordPress Plugin ZIP
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build ZIP
+        run: |
+          mkdir -p dist
+          cp -r tig-festival-program dist/tig-festival-program
+          cd dist && zip -r ../tig-festival-program.zip tig-festival-program/
+          echo "ZIP size: $(ls -lh tig-festival-program.zip)"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tig-festival-program
+          path: tig-festival-program.zip
+          retention-days: 30
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: tig-festival-program.zip
+          name: TIG Festival Program ${{ github.ref_name }}
+          body: |
+            ## TIG Festival Program ${{ github.ref_name }}
+
+            **Telepítés / Installation:**
+            1. Töltsd le / Download: `tig-festival-program.zip`
+            2. WordPress admin → Bővítmények → Új hozzáadása → Bővítmény feltöltése
+            3. Aktiváld / Activate the plugin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
