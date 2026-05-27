@@ -6,15 +6,12 @@ on:
       - 'v*'
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Build ZIP
         run: |
@@ -24,7 +21,7 @@ jobs:
           echo "ZIP size: $(ls -lh tig-festival-program.zip)"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: tig-festival-program
           path: tig-festival-program.zip
